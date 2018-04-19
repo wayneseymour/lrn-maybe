@@ -1,4 +1,4 @@
-import { compose, prop, path, __ } from 'ramda';
+import {compose, prop, path, __} from 'ramda';
 import Maybe from '../Maybe';
 
 describe(`Maybe Algaebraic Data Type`, () => {
@@ -6,8 +6,8 @@ describe(`Maybe Algaebraic Data Type`, () => {
 		email: 'james@example.com',
 		accountDetails: {
 			address: {
-				street:   '123 Fake St',
-				city:     'Exampleville',
+				street: '123 Fake St',
+				city: 'Exampleville',
 				province: 'NS',
 				postcode: '1234'
 			}
@@ -25,7 +25,7 @@ describe(`Maybe Algaebraic Data Type`, () => {
 		'PE': '/assets/banners/prince-edward.jpg',
 		'QC': '/assets/banners/quebec.jpg',
 		'SK': '/assets/banners/saskatchewan.jpg',
-		'YT': '/assets/banners/yukon.jpg',
+		'YT': '/assets/banners/yukon.jpg'
 	};
 	it(`should "look" like the following promise (just a box around a value)`, () => {
 		var data = {foo: 'bar'};
@@ -36,7 +36,7 @@ describe(`Maybe Algaebraic Data Type`, () => {
 	describe(`used with getUserBanner`, () => {
 		it(`should allow me to map over, point free`, () => {
 			expect(getUserBannerFP(banners, user)).toEqual({"__value": "/assets/banners/nova-scotia.jpg"});
-			function getUserBannerFP(banners, user) {
+			function getUserBannerFP (banners, user) {
 				return Maybe.of(user)
 					.map(prop('accountDetails'))
 					.map(prop('address'))
@@ -46,10 +46,10 @@ describe(`Maybe Algaebraic Data Type`, () => {
 		});
 	});
 });
-function getUserBannerNaive(banners, user) {
+function getUserBannerNaive (banners, user) {
 	return banners[user.accountDetails.address.province];
 }
-function getUserBannerImperativeDefensive(banners, user) {
+function getUserBannerImperativeDefensive (banners, user) {
 	if (user !== null) {
 		if (user.accountDetails !== undefined) {
 			if (user.accountDetails.address !== undefined) {
