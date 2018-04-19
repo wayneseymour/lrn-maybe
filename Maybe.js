@@ -9,9 +9,9 @@ Maybe.prototype.isNothing = function() {
 };
 Maybe.prototype.map = function(f) {
 	if (this.isNothing()) {
-		return Maybe.of(null);
+		return Maybe.of(null);  // Left
 	}
-	return Maybe.of(f(this.__value));
+	return Maybe.of(f(this.__value)); // Right
 };
 
 export default Maybe;
