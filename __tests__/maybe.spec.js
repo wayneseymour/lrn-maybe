@@ -1,4 +1,5 @@
-import { R, compose, prop, path } from 'ramda';
+import { compose, prop, path, __ } from 'ramda';
+import Maybe from '../Maybe';
 
 describe(`Maybe Algaebraic Data Type`, () => {
 	const user = {
@@ -32,14 +33,23 @@ describe(`Maybe Algaebraic Data Type`, () => {
 			.then(pluckFoo)
 			.then(x => console.log(`\n### x: \n\t${x}`))
 	});
-	it(`should ?`, () => {
-		console.log(`\n### getUserBanner(banners, user): \n\t${getUserBanner(banners, user)}`);
+	describe(`used with getUserBanner`, () => {
+		it(`should allow me to map over, point free`, () => {
+			expect(getUserBannerFP(banners, user)).toEqual({"__value": "/assets/banners/nova-scotia.jpg"});
+			function getUserBannerFP(banners, user) {
+				return Maybe.of(user)
+					.map(prop('accountDetails'))
+					.map(prop('address'))
+					.map(prop('province'))
+					.map(prop(__, banners));
+			}
+		});
 	});
 });
-function getUserBanner(banners, user) {
+function getUserBannerNaive(banners, user) {
 	return banners[user.accountDetails.address.province];
 }
-function getUserBannerImperative(banners, user) {
+function getUserBannerImperativeDefensive(banners, user) {
 	if (user !== null) {
 		if (user.accountDetails !== undefined) {
 			if (user.accountDetails.address !== undefined) {
