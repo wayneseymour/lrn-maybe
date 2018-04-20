@@ -33,15 +33,18 @@ describe(`Maybe Algaebraic Data Type`, () => {
 			.then(pluckFoo)
 			.then(x => expect(x).toEqual('bar'));
 	});
-	it(`should return a Maybe with the expected value within`, () => {
-		expect(getUserBannerFP(banners, user)).toEqual({"__value": "/assets/banners/nova-scotia.jpg"});
-		function getUserBannerFP (banners, user) {
-			return Maybe.of(user)
-				.map(prop('accountDetails'))
-				.map(prop('address'))
-				.map(prop('province'))
-				.map(prop(__, banners));
-		}
+	describe(`with a normal (flat) maybe`, () => {
+		let getUserBanner;
+		it(`should return a Maybe with the expected value within`, () => {
+			const userBanner = xs => obj =>
+				Maybe.of(obj)
+					.map(prop('accountDetails'))
+					.map(prop('address'))
+					.map(prop('province'))
+					.map(prop(__, xs));
+			getUserBanner = userBanner(banners);
+			expect(getUserBanner(user)).toEqual({"__value": "/assets/banners/nova-scotia.jpg"});
+		});
 	});
 });
 const getProvinceBanner = province => xs => {
