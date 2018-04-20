@@ -27,25 +27,26 @@ describe(`Maybe Algaebraic Data Type`, () => {
 		'SK': '/assets/banners/saskatchewan.jpg',
 		'YT': '/assets/banners/yukon.jpg'
 	};
-	it(`should "look" like the following promise (just a box around a value)`, () => {
+	it(`should "look" like a promise (just a box around a value)`, () => {
 		var data = {foo: 'bar'};
 		return Promise.resolve(data)
 			.then(pluckFoo)
-			.then(x => console.log(`\n### x: \n\t${x}`))
+			.then(x => expect(x).toEqual('bar'));
 	});
-	describe(`used with getUserBanner`, () => {
-		it(`should allow me to map over, point free`, () => {
-			expect(getUserBannerFP(banners, user)).toEqual({"__value": "/assets/banners/nova-scotia.jpg"});
-			function getUserBannerFP (banners, user) {
-				return Maybe.of(user)
-					.map(prop('accountDetails'))
-					.map(prop('address'))
-					.map(prop('province'))
-					.map(prop(__, banners));
-			}
-		});
+	it(`should return a Maybe with the expected value within`, () => {
+		expect(getUserBannerFP(banners, user)).toEqual({"__value": "/assets/banners/nova-scotia.jpg"});
+		function getUserBannerFP (banners, user) {
+			return Maybe.of(user)
+				.map(prop('accountDetails'))
+				.map(prop('address'))
+				.map(prop('province'))
+				.map(prop(__, banners));
+		}
 	});
 });
+const getProvinceBanner = province => xs => {
+	return Maybe.of(xs[province]);
+};
 function getUserBannerNaive (banners, user) {
 	return banners[user.accountDetails.address.province];
 }
